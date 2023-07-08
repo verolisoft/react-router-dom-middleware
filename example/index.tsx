@@ -1,14 +1,11 @@
-import 'react-app-polyfill/ie11';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Thing } from '../.';
+import React from 'react';
+import { render } from 'react-dom';
+import { App } from './src/app';
 
-const App = () => {
-  return (
-    <div>
-      <Thing />
-    </div>
-  );
-};
-
-ReactDOM.render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  container
+);

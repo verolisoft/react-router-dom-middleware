@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": false,
     "target": "es5",
-    "module": "commonjs",
+    "module": "esnext",
+    "lib": ["ESNext", "DOM"],
     "jsx": "react",
-    "moduleResolution": "node",
-    "noImplicitAny": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "removeComments": true,
-    "strictNullChecks": true,
-    "preserveConstEnums": true,
     "sourceMap": true,
-    "lib": ["es2015", "es2016", "dom"],
-    "types": ["node"]
-  }
+    "strict": true,
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "~/*": ["./*"]
+    },
+    "typeRoots": ["node_modules/@types"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  },
+  // "include": ["src/**/*", "index.tsx"]
 }
