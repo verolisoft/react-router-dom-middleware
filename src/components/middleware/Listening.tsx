@@ -9,12 +9,11 @@ export function RouterListening({
   onChange,
 }: IRouterListeningProps): React.ReactElement {
   const Routes = () => useRoutes(routes);
-  const { pathname } = useLocation();
-  const locationCurrent = pathname;
+  const locationCurrent = useLocation().pathname;
 
   useEffect(() => {
     return history.listen(({ location, action }) => {
-      onChange({ to: location.pathname, from: locationCurrent, action });
+      onChange({ to: location.pathname, from: locationCurrent }, action);
     });
   }, [history, locationCurrent, onChange]);
 
