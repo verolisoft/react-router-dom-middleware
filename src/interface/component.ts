@@ -1,5 +1,6 @@
 import { BrowserHistory } from "history";
-import { CollectionRoute } from "./routes";
+import { CollectionRoute } from "./router";
+import { MiddlewareHandle } from "./middleware";
 
 export interface RouterViewProps {
   routes: CollectionRoute;
@@ -11,5 +12,5 @@ export interface RouterMiddlewareProps extends RouterViewProps {
 }
 
 export interface RouterListeningProps extends RouterMiddlewareProps {
-  onChange: (location: any) => void; 
+  onChange: MiddlewareHandle;
 }
