@@ -1,41 +1,40 @@
 import React from 'react';
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import { IRouterMiddlewareProps } from '../../interface';
+import { IRouteObject } from '../../interface';
+import { RouteFindByPath } from '../../utils';
 import { RouterListening } from './Listening';
+
+import {
+  IRouterMiddlewareProps,
+  IMiddlewareHandle,
+  IMiddlewareFunction,
+  INextFunction,
+} from '../../interface';
 
 export function RouterMiddleware({
   history,
   routes,
   suspense,
 }: IRouterMiddlewareProps): React.ReactElement {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const next = (path: string | null = null) => {
-  //   if (!path) return;
-  //   navigate(path, { replace: true });
-  // };
+  /**
+   * next function to continue with the route.
+   * @param path pass the path or leave it null.
+   * @returns empty return.
+   */
+  const next: INextFunction = (path = null) => {
+    if (!path) return;
+    navigate(path, { replace: true });
+  };
 
-  const handleMiddleware = ({ to, from }: { to: string; from: string }) => {
-    // console.log(route);
-    console.log({ to, from });
-    // for (const parentRoutes of routes) {
-    //   if (from === parentRoutes.path) {
-    //     parentRoutes.meta.middleware.forEach(function (middleware: any) {
-    //       middleware(to, from, next);
-    //     });
-    //     break;
-    //   }
+  const handleMiddleware: IMiddlewareHandle = ({ to, from }) => {
+    const pathFound: IRouteObject = RouteFindByPath(to, routes);
 
-    //   for (const childrenRoutes of parentRoutes.children) {
-    //     if (from === `/${childrenRoutes.path}`) {
-    //       childrenRoutes.meta.middleware.forEach(function (middleware: any) {
-    //         middleware(to, from, next);
-    //       });
-    //       break;
-    //     }
-    //   }
-    // }
+    pathFound.meta.middleware.forEach((middleware: IMiddlewareFunction) => {
+      middleware({ to, from }, next);
+    });
   };
 
   return (
