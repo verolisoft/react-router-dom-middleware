@@ -1,160 +1,126 @@
-# TSDX React User Guide
+# **React Router Dom Middleware** &middot; [![npm package][npm-badge]][npm]
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+[npm-badge]: https://img.shields.io/npm/v/react-router-dom-middleware
+[npm]: https://www.npmjs.com/package/react-router-dom-middleware
 
-> This TSDX setup is meant for developing React component libraries (not apps!) that can be published to NPM. If you’re looking to build a React-based app, you should use `create-react-app`, `razzle`, `nextjs`, `gatsby`, or `react-static`.
+> `react-router-dom-middleware` : is a library that takes the power of `react-router-dom` and encapsulates it, to create a more organized and middleware-protected, routing system within your react application.
 
-> If you’re new to TypeScript and React, checkout [this handy cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet/)
-
-## Commands
-
-TSDX scaffolds your new library inside `/src`, and also sets up a [Parcel-based](https://parceljs.org) playground for it inside `/example`.
-
-The recommended workflow is to run TSDX in one terminal:
+## Install
 
 ```bash
-npm start # or yarn start
+npm i react-router-dom-middleware
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+## **Documentation**
 
-Then run the example inside another:
+In `react-router-dom-middleware` there is a main router component called `<RouterView />`. This component is used to render views with middleware.
 
-```bash
-cd example
-npm i # or yarn to install dependencies
-npm start # or yarn start
+```typescript
+import { RouterView } from 'react-router-dom-middleware';
 ```
 
-The default example imports and live reloads whatever is in `/dist`, so if you are seeing an out of date component, make sure TSDX is running in watch mode like we recommend above. **No symlinking required**, we use [Parcel's aliasing](https://parceljs.org/module_resolution.html#aliases).
+To make `<RouterView />` work, you must pass an array of routes to the `routes` property of the component. There is also a `suspense` property to represent the loading component of views.
 
-To do a one-off build, use `npm run build` or `yarn build`.
+If you are coding in `typescript` import the interface from the routes array.
 
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle analysis
-
-Calculates the real cost of your library using [size-limit](https://github.com/ai/size-limit) with `npm run size` and visulize it with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/example
-  index.html
-  index.tsx       # test your component here in a demo app
-  package.json
-  tsconfig.json
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+```typescript
+import { ICollectionRoute } from 'react-router-dom-middleware';
 ```
 
-#### React Testing Library
+#### **Routes file.**
 
-We do not set up `react-testing-library` for you yet, we welcome contributions and documentation on this.
+```typescript
+import { HomeView, ContactView } from '../views'; // view component import.
 
-### Rollup
+export const routes: ICollectionRoute = [
+  {
+    path: '/',
+    name: 'Home',
+    element: <HomeView />,
+    children: [], // add child routes here.
+    meta: {
+      middleware: [isLogged], // add middleware functions here.
+    },
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    element: <ContactView />,
+    meta: {
+      middleware: [], // this view has no protection.
+    },
+  },
+];
+```
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+#### **Config component `<App />`.**
 
-### TypeScript
+Your `<App />` component configure the `<RouterView />` component
 
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
+```typescript
+import { routes } from './routes';
 
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+export function App(): React.ReactElement {
+  return <RouterView routes={routes} suspense={<div>Loading...</div>} />;
 }
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+To create a middleware guard on your route, import the interface if you're coding in `typescript`.
 
-## Module Formats
+#### **Middleware.**
 
-CJS, ESModules, and UMD module formats are supported.
-
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
-
-## Deploying the Example Playground
-
-The Playground is just a simple [Parcel](https://parceljs.org) app, you can deploy it anywhere you would normally deploy that. Here are some guidelines for **manually** deploying with the Netlify CLI (`npm i -g netlify-cli`):
-
-```bash
-cd example # if not already in the example folder
-npm run build # builds to dist
-netlify deploy # deploy the dist folder
+```typescript
+import { IMiddlewareFunction } from 'react-router-dom-middleware';
 ```
 
-Alternatively, if you already have a git repo connected, you can set up continuous deployment with Netlify:
+Then create a midlleware function taking two parameters as input, the first is a `to` and `from` object, the second is the `next` function where you can tell it if it should change the path or continue its course.
 
-```bash
-netlify init
-# build command: yarn build && cd example && yarn && yarn build
-# directory to deploy: example/dist
-# pick yes for netlify.toml
+```typescript
+export const isLogged: IMiddlewareFunction = ({ to, from }, next) => {
+  if (!_auth) next('/login');
+  return next();
+};
 ```
 
-## Named Exports
+## Suggestions
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+> `react-router-dom-middleware` is ready to use anything from the `react-router-dom` library. You can use `<Link />` simply by importing it.
 
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
-
-## Usage with Lerna
-
-When creating a new package with TSDX within a project set up with Lerna, you might encounter a `Cannot resolve dependency` error when trying to run the `example` project. To fix that you will need to make changes to the `package.json` file _inside the `example` directory_.
-
-The problem is that due to the nature of how dependencies are installed in Lerna projects, the aliases in the example project's `package.json` might not point to the right place, as those dependencies might have been installed in the root of your Lerna project.
-
-Change the `alias` to point to where those packages are actually installed. This depends on the directory structure of your Lerna project, so the actual path might be different from the diff below.
-
-```diff
-   "alias": {
--    "react": "../node_modules/react",
--    "react-dom": "../node_modules/react-dom"
-+    "react": "../../../node_modules/react",
-+    "react-dom": "../../../node_modules/react-dom"
-   },
+```typescript
+import { Link } from "react-router-dom-middleware";
 ```
 
-An alternative to fixing this problem would be to remove aliases altogether and define the dependencies referenced as aliases as dev dependencies instead. [However, that might cause other problems.](https://github.com/palmerhq/tsdx/issues/64)
+> This is the folder structure we suggest using:
+
+```txt
+/src
+  /middleware
+    index.ts ----------- # add route protection functions.
+  /routes
+    index.tsx ---------- # add the routes array.
+  /views
+    index.tsx
+    home.tsx
+    contact.tsx
+  app.tsx -------------- # use the <RouterView /> component
+
+```
+
+> So you can export the components of the views.
+
+```typescript
+import React, { lazy, LazyExoticComponent } from "react";
+
+const HomeView: LazyExoticComponent<React.ComponentType<any>> = lazy(
+  () => import("./home")
+);
+const ContactView: LazyExoticComponent<React.ComponentType<any>> = lazy(
+  () => import("./contact")
+);
+
+export { HomeView, ContactView };
+```
+
+## License
+
+[MIT](LICENSE)
