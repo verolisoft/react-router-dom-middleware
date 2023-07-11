@@ -1,5 +1,5 @@
 {
-  "version": "0.1.4",
+  "version": "0.1.6",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -46,6 +46,11 @@
       "limit": "10 KB"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/givespa/react-router-dom-middleware.git"
+  },
+  "homepage": "https://github.com/givespa/react-router-dom-middleware#readme",
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.2.6",
     "@types/react": "^18.2.14",
