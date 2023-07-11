@@ -27,10 +27,10 @@ If you are coding in `typescript` import the interface from the routes array.
 import { ICollectionRoute } from 'react-router-dom-middleware';
 ```
 
-#### **Routes file.**
-
+#### **Routes** `routes/index.tsx`
 ```typescript
 import { HomeView, ContactView } from '../views'; // view component import.
+import { isLogged } from '../middleware'; // middleware import
 
 export const routes: ICollectionRoute = [
   {
@@ -53,7 +53,7 @@ export const routes: ICollectionRoute = [
 ];
 ```
 
-#### **Config component `<App />`.**
+#### **Component `<App />`.**
 
 Your `<App />` component configure the `<RouterView />` component
 
@@ -67,7 +67,7 @@ export function App(): React.ReactElement {
 
 To create a middleware guard on your route, import the interface if you're coding in `typescript`.
 
-#### **Middleware.**
+#### **Middleware** `middleware/index.ts`
 
 ```typescript
 import { IMiddlewareFunction } from 'react-router-dom-middleware';
@@ -99,14 +99,14 @@ import { Link } from "react-router-dom-middleware";
   /routes
     index.tsx ---------- # add the routes array.
   /views
-    index.tsx
+    index.tsx ---------- # centralized views.
     home.tsx
     contact.tsx
   app.tsx -------------- # use the <RouterView /> component
 
 ```
 
-> So you can export the components of the views.
+> So that you can export the components of the views, add them in the file `views/index.tsx`
 
 ```typescript
 import React, { lazy, LazyExoticComponent } from "react";
