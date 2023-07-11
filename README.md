@@ -3,7 +3,7 @@
 [npm-badge]: https://img.shields.io/npm/v/react-router-dom-middleware
 [npm]: https://www.npmjs.com/package/react-router-dom-middleware
 
-> `react-router-dom-middleware` : is a library that takes the power of `react-router-dom` and encapsulates it, to create a more organized and middleware-protected, routing system within your react application.
+> `react-router-dom-middleware` is a library that takes the power of `react-router-dom` and encapsulates it, to create a more organized and middleware-protected, routing system within your react application.
 
 ## Install
 
@@ -19,7 +19,7 @@ In **`react-router-dom-middleware`** there is a main router component called `<R
 import { RouterView } from 'react-router-dom-middleware';
 ```
 
-To make `<RouterView />` work, you must pass an array of routes to the `routes` property of the component. There is also a `suspense` property to represent the loading component of views.
+To make `<RouterView />` work, you must pass an array of routes to the **`routes`** property of the component. There is also a `suspense` property to represent the loading component of views.
 
 If you are coding in `typescript` import the interface from the routes array.
 
@@ -27,7 +27,7 @@ If you are coding in `typescript` import the interface from the routes array.
 import { ICollectionRoute } from 'react-router-dom-middleware';
 ```
 
-#### **Routes** `routes/index.tsx`
+#### **Routes** &middot; `routes/index.tsx`
 
 ```typescript
 import { HomeView, ContactView } from '../views'; // view component import.
@@ -54,7 +54,7 @@ export const routes: ICollectionRoute = [
 ];
 ```
 
-#### **Component `<App />`.**
+#### **Component** &middot; `<App />`
 
 Your `<App />` component configure the `<RouterView />` component
 
@@ -68,7 +68,7 @@ export function App(): React.ReactElement {
 
 To create a middleware guard on your route, import the interface if you're coding in `typescript`.
 
-#### **Middleware** `middleware/index.ts`
+#### **Middleware** &middot; `middleware/index.ts`
 
 ```typescript
 import { IMiddlewareFunction } from 'react-router-dom-middleware';
