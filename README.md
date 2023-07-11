@@ -1,4 +1,4 @@
-# **React Router Dom Middleware** &middot; [![npm package][npm-badge]][npm]
+# **React Router Dom Middleware** &middot; [![npm package][npm-badge]][npm] ![npm](https://img.shields.io/npm/dt/react-router-dom-middleware) ![NPM](https://img.shields.io/npm/l/react-router-dom-middleware)
 
 [npm-badge]: https://img.shields.io/npm/v/react-router-dom-middleware
 [npm]: https://www.npmjs.com/package/react-router-dom-middleware
@@ -11,9 +11,9 @@
 npm i react-router-dom-middleware
 ```
 
-## **Documentation**
+## Documentation
 
-In `react-router-dom-middleware` there is a main router component called `<RouterView />`. This component is used to render views with middleware.
+In **`react-router-dom-middleware`** there is a main router component called `<RouterView />`. This component is used to render views with middleware.
 
 ```typescript
 import { RouterView } from 'react-router-dom-middleware';
@@ -28,6 +28,7 @@ import { ICollectionRoute } from 'react-router-dom-middleware';
 ```
 
 #### **Routes** `routes/index.tsx`
+
 ```typescript
 import { HomeView, ContactView } from '../views'; // view component import.
 import { isLogged } from '../middleware'; // middleware import
@@ -87,7 +88,7 @@ export const isLogged: IMiddlewareFunction = ({ to, from }, next) => {
 > `react-router-dom-middleware` is ready to use anything from the `react-router-dom` library. You can use `<Link />` simply by importing it.
 
 ```typescript
-import { Link } from "react-router-dom-middleware";
+import { Link } from 'react-router-dom-middleware';
 ```
 
 > This is the folder structure we suggest using:
@@ -109,13 +110,13 @@ import { Link } from "react-router-dom-middleware";
 > So that you can export the components of the views, add them in the file `views/index.tsx`
 
 ```typescript
-import React, { lazy, LazyExoticComponent } from "react";
+import React, { lazy, LazyExoticComponent } from 'react';
 
-const HomeView: LazyExoticComponent<React.ComponentType<any>> = lazy(
-  () => import("./home")
+const HomeView: LazyExoticComponent<React.ComponentType<any>> = lazy(() =>
+  import('./home')
 );
-const ContactView: LazyExoticComponent<React.ComponentType<any>> = lazy(
-  () => import("./contact")
+const ContactView: LazyExoticComponent<React.ComponentType<any>> = lazy(() =>
+  import('./contact')
 );
 
 export { HomeView, ContactView };
